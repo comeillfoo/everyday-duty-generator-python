@@ -15,10 +15,10 @@ jobs:
       run: echo "::set-output name=year::$(date +'%Y')"
     - name: install pdflatex
       run: sudo apt install -y texlive-latex-base
-    - name: set up Python 3.7.3
+    - name: set up Python 3.9
       uses: actions/setup-python@v4
       with:
-        python-version: '3.7.3'
+        python-version: '3.9'
     - name: set up required packages
       run: pip install -r requirements.txt
     - name: generate current year timetable
