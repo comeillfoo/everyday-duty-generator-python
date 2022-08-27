@@ -13,10 +13,8 @@ jobs:
     - name: save current year
       id: current_year
       run: echo "::set-output name=year::$(date +'%Y')"
-    - name: install pdflatex
-      run: sudo apt install -y texlive-latex-base
-    - name: install additional fonts
-      run: sudo apt install -y texlive-fonts-extra
+    - name: install pdflatex fonts and cyrillic support
+      run: sudo apt install -y texlive-latex-base texlive-lang-cyrillic texlive-fonts-extra
     - name: set up Python 3.9
       uses: actions/setup-python@v4
       with:
@@ -27,7 +25,7 @@ jobs:
       run: python3 main.py
     - name: build pdf from tex file
       run: pdflatex data.tex
-    - name: save
+    - name: save generated timetable
       uses: actions/upload-artifact@v3
       with:
         name: data-${{ steps.current_year.outputs.year }}.pdf
