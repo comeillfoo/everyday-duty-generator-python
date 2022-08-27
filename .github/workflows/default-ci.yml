@@ -1,0 +1,32 @@
+# Default CI for everyday-duty-generator-python
+
+
+name: everyday-duty-generator-ci
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: save current year
+      id: current_year
+      run: echo "::set-output name=year::$(date +'%Y')"
+    - name: install pdflatex
+      run: apt install -y texlive-latex-base
+    - name: set up Python 3.7.3
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.7.3'
+    - name: set up required packages
+      run: pip install -r requirements.txt
+    - name: generate current year timetable
+      run: python3 main.py
+    - name: build pdf from tex file
+      run: pdflatex data.tex
+    - name: save
+      uses: actions/upload-artifact@v3
+      with:
+        name: data-${{ steps.current_year.outputs.year }}.pdf
+        path: data.pdf

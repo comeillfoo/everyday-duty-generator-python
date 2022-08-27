@@ -1,1 +1,0 @@
-python main.py && pdflatex data.tex

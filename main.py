@@ -1,4 +1,7 @@
+#!/usr/bin/env python3
 from datetime import date, timedelta
+import toml
+
 
 def all_sundays( year ):
    day = date( year, 9, 1 )
@@ -28,6 +31,7 @@ class Tag():
   def __exit__( self, type, value, traceback ):
     self.file.write( self.indent * " " + self.end + "\n" )
 
+
 def append_preamble( file ):
   # step n: write document preamble
   file.write( "\\documentclass{article}\n" )
@@ -47,19 +51,20 @@ def append_preamble( file ):
   file.write( "\\sloppy\n" )
 
 
-current_year = 2021
+current_year = date.today().year
 
-janitor_names = [ 'Ленар', 'Даниил', 'Ваня', 'Влад', 'Никита' ]
 
-janitors = [ { 'name': janitor_name } for janitor_name in janitor_names ]
+janitors = toml.load('config.toml')['janitors']
 
 
 begin = lambda name: "\\begin{" + name + "}"
 end = lambda name: "\\end{" + name + "}"
 parens = lambda name: ( begin( name ), end( name ) )
 
+
 def append_indent_line( tag, file, content ):
   file.write( ( tag.indent + 2 ) * " " + content + "\n" )
+
 
 def main():
   global_file = 'data.tex'
@@ -74,7 +79,7 @@ def main():
         append_indent_line( TableTag, f, "\\centering" )
         with Tag( TableTag, f, ( begin( "tabular" ) + "{" + ( "|".join( [ "l" for i in range( len( janitors ) + 1 ) ] ) ) + "}", end( "tabular" ) ) ) as TabularTag:
           append_indent_line( TabularTag, f, "\\toprule" )
-          columns = [ "Дата" ] + janitor_names
+          columns = [ "Дата" ] + list(map(lambda janitor: janitor["name"], janitors))
           append_indent_line( TabularTag, f, " & ".join( columns ) )
           for idx, day in enumerate( all_sundays( current_year ) ):
             append_indent_line( TabularTag, f, "\\\\\\midrule" )
