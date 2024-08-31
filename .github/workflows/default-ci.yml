@@ -1,32 +1,36 @@
 # Default CI for everyday-duty-generator-python
-
-
 name: everyday-duty-generator-ci
 
-on: [push, pull_request]
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: actions-env
     steps:
-    - uses: actions/checkout@v2
-    - name: save current year
+    - uses: actions/checkout@v4
+    - name: Save current year
       id: current_year
       run: echo "::set-output name=year::$(date +'%Y')"
-    - name: install pdflatex fonts and cyrillic support
-      run: sudo apt install -y texlive-latex-base texlive-lang-cyrillic texlive-fonts-extra
-    - name: set up Python 3.9
-      uses: actions/setup-python@v4
+    - name: Install pdflatex fonts and cyrillic support
+      uses: awalsh128/cache-apt-pkgs-action@latest
+      with:
+        packages: texlive-latex-base texlive-lang-cyrillic texlive-fonts-extra
+        version: 1.0
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v5
       with:
         python-version: '3.9'
-    - name: set up required packages
-      run: pip install -r requirements.txt
-    - name: generate current year timetable
-      run: python3 main.py
-    - name: build pdf from tex file
+    # - name: set up required packages
+    #   run: pip install -r requirements.txt
+    - name: Generate current year timetable
+      run: |
+        export janitors=(${{ fromJSON(vars.JANITORS) }})
+        python3 main.py
+    - name: Build pdf from Tex file
       run: pdflatex data.tex
-    - name: save generated timetable
-      uses: actions/upload-artifact@v3
+    - name: Save generated timetable
+      uses: actions/upload-artifact@v4
       with:
         name: data-${{ steps.current_year.outputs.year }}.pdf
         path: data.pdf

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
+import os
 from datetime import date, timedelta
-import toml
 
 
 def all_sundays( year ):
@@ -54,8 +54,7 @@ def append_preamble( file ):
 current_year = date.today().year
 
 
-janitors = toml.load('config.toml')['janitors']
-
+janitors = os.getenv('janitors', [])
 
 begin = lambda name: "\\begin{" + name + "}"
 end = lambda name: "\\end{" + name + "}"
