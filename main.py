@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 import os
 from datetime import date, timedelta
+from typing import Generator
 
 
-def all_sundays(year):
+def all_sundays(year: int) -> Generator[date, None, None]:
   day = date(year, 9, 1)
   day += timedelta(days = 6 - day.weekday())
   while not (day.year == year + 1 and day.month == 9):
@@ -18,7 +19,7 @@ NullTag = Object()
 NullTag.indent = -2
 
 
-class Tag():
+class Tag:
   def __init__(self, preTag, file, parens):
     self.indent = preTag.indent + 2
     self.file = file
@@ -60,8 +61,8 @@ end = lambda name: '\\end{' + name + '}'
 parens = lambda name: ( begin( name ), end( name ) )
 
 
-def append_indent_line( tag, file, content ):
-  file.write( ( tag.indent + 2 ) * ' ' + content + '\n')
+def append_indent_line(tag: Tag, file, content: str):
+  file.write((tag.indent + 2) * ' ' + content + '\n')
 
 
 def main():
@@ -79,7 +80,7 @@ def main():
 
         with Tag(TableTag, f, (begin('tabular') + '{' + ('|'.join(['l' for i in range(len(janitors) + 1)])) + '}', end('tabular'))) as TabularTag:
           append_indent_line(TabularTag, f, '\\toprule')
-          columns = ['Дата'] + list(map(lambda janitor: janitor['name'], janitors))
+          columns = ['Дата'] + janitors
           append_indent_line(TabularTag, f, ' & '.join(columns))
 
           for idx, day in enumerate(all_sundays(current_year)):
