@@ -13,6 +13,9 @@ jobs:
       id: current_year
       run: echo "::set-output name=year::$(date +'%Y')"
     - name: Install pdflatex fonts and cyrillic support
+      run: |
+        apt update
+        apt install -y texlive-latex-base texlive-lang-cyrillic texlive-fonts-extra
       uses: awalsh128/cache-apt-pkgs-action@latest
       with:
         packages: texlive-latex-base texlive-lang-cyrillic texlive-fonts-extra
