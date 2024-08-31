@@ -25,7 +25,7 @@ jobs:
     #   run: pip install -r requirements.txt
     - name: Generate current year timetable
       run: |
-        export janitors=(${{ fromJSON(vars.JANITORS) }})
+        export JANITORS=${{ vars.JANITORS }}
         python3 main.py
     - name: Build pdf from Tex file
       run: pdflatex data.tex
