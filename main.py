@@ -71,7 +71,7 @@ def main():
     append_preamble(f)
 
     with Tag(NullTag, f, parens('document')) as DocumentTag:
-      append_indent_line(DocumentTag, f, '\\section*{\\centerline{ График уборки }}')
+      append_indent_line(DocumentTag, f, '\\subsection*{\\centerline{ График уборки }}')
       append_indent_line(DocumentTag, f, '\\paragraph*{\\centerline{ Ванна, раковина, зеркало, пол в ванной, туалет, мусорка, пол в туалете, пол в блоке } }\\mbox{}\\\\')
 
       with Tag(DocumentTag, f, (begin('table') + '[!ht]', end('table'))) as TableTag:
