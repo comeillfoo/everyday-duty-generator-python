@@ -42,7 +42,7 @@ def append_preamble(file):
   file.write('\\usepackage[english, russian]{babel}\n')
   file.write('\\usepackage{wasysym}\n')
   file.write('\\usepackage{vmargin}\n')
-  file.write('\\setmarginsrb{1cm}{0.2cm}{0.2cm}{0.2cm}{0pt}{0pt}{0pt}{0mm}\n')
+  file.write('\\setmarginsrb{0.2cm}{0.2cm}{0.2cm}{0.2cm}{0pt}{0pt}{0pt}{0mm}\n')
   file.write('\\setpapersize{A4}\n')
   file.write('\\usepackage{booktabs}\n')
   file.write('\\renewcommand\\arraystretch{2}\n')
@@ -71,8 +71,8 @@ def main():
     append_preamble(f)
 
     with Tag(NullTag, f, parens('document')) as DocumentTag:
-      append_indent_line(DocumentTag, f, '\\subsection*{\\centerline{ График уборки }}')
-      append_indent_line(DocumentTag, f, '\\paragraph*{\\centerline{ Ванна, раковина, зеркало, пол в ванной, туалет, мусорка, пол в туалете, пол в блоке } }\\mbox{}\\\\')
+      append_indent_line(DocumentTag, f, '\\centerline{\\textbf{График уборки}}')
+      append_indent_line(DocumentTag, f, '\\centerline{\\textit{Ванна, раковина, зеркало, пол в ванной, туалет, мусорка, пол в туалете, пол в блоке}}\\\\')
 
       with Tag(DocumentTag, f, (begin('table') + '[!ht]', end('table'))) as TableTag:
         append_indent_line(TableTag, f, '\\small')
