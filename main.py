@@ -72,7 +72,7 @@ def main():
 
     with Tag(NullTag, f, parens('document')) as DocumentTag:
       append_indent_line(DocumentTag, f, '\\centerline{\\textbf{График уборки}}')
-      append_indent_line(DocumentTag, f, '\\centerline{\\textit{Ванна, раковина, зеркало, пол в ванной, туалет, мусорка, пол в туалете, пол в блоке}}\\\\')
+      append_indent_line(DocumentTag, f, '\\centerline{\\textit{Ванна, раковина, зеркало, пол в ванной, туалет, мусорка, пол в туалете, пол в блоке}}')
 
       with Tag(DocumentTag, f, (begin('table') + '[!ht]', end('table'))) as TableTag:
         append_indent_line(TableTag, f, '\\small')
